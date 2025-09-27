@@ -2,7 +2,7 @@ import UIKit
 import Flutter
 import flutter_downloader
 import FirebaseCore
-import OneSignal
+import OneSignalFramework   // ✅ updated import
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
@@ -24,20 +24,21 @@ import OneSignal
       }
     }
 
-    // Initialize OneSignal with your app ID
-    OneSignal.setAppId("YOUR_ONESIGNAL_APP_ID")
+    // ✅ Initialize OneSignal
+    OneSignal.initialize("YOUR_ONESIGNAL_APP_ID", withLaunchOptions: launchOptions)
 
-    // Handle notification received in foreground
-    OneSignal.setNotificationWillShowInForegroundHandler { notification, completion in
+    // ✅ Handle notification received in foreground
+    OneSignal.Notifications.addForegroundLifecycleListener { notificationWillDisplayEvent in
       let currentBadgeCount = UIApplication.shared.applicationIconBadgeNumber
       UIApplication.shared.applicationIconBadgeNumber = currentBadgeCount + 1
 
-      completion(notification)
+      notificationWillDisplayEvent.complete(notificationWillDisplayEvent.notification)
     }
 
-    // Handle notification opened
-    OneSignal.setNotificationOpenedHandler { result in
+    // ✅ Handle notification opened
+    OneSignal.Notifications.addClickListener { notificationClickEvent in
       // Handle opened notification if needed
+      print("Notification clicked: \(notificationClickEvent.notification)")
     }
 
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
