@@ -31,12 +31,12 @@ class MyNotificationClickListener: NSObject, OSNotificationClickListener {
   ) -> Bool {
 
     // 🔹 Initialize Firebase safely
-    FirebaseApp.configure()
-    if let app = FirebaseApp.app() {
-        print("✅ Firebase initialized: \(app.name)")
-    } else {
-        print("❌ Firebase failed to initialize")
-    }
+    // FirebaseApp.configure()
+    // if let app = FirebaseApp.app() {
+    //     print("✅ Firebase initialized: \(app.name)")
+    // } else {
+    //     print("❌ Firebase failed to initialize")
+    // }
 
     // Register Flutter plugins
     GeneratedPluginRegistrant.register(with: self)
@@ -49,10 +49,10 @@ class MyNotificationClickListener: NSObject, OSNotificationClickListener {
     }
 
     // 🔹 Initialize OneSignal safely
-    if "YOUR-ONESIGNAL-APP-ID" == "YOUR-ONESIGNAL-APP-ID" {
-        print("⚠️ OneSignal App ID is placeholder — replace it with your real App ID")
-    }
-    OneSignal.initialize("YOUR-ONESIGNAL-APP-ID", withLaunchOptions: launchOptions)
+    // if "YOUR-ONESIGNAL-APP-ID" == "YOUR-ONESIGNAL-APP-ID" {
+    //     print("⚠️ OneSignal App ID is placeholder — replace it with your real App ID")
+    // }
+    // OneSignal.initialize("YOUR-ONESIGNAL-APP-ID", withLaunchOptions: launchOptions)
     OneSignal.Notifications.addForegroundLifecycleListener(MyForegroundNotificationListener())
     OneSignal.Notifications.addClickListener(MyNotificationClickListener())
     
