@@ -25,28 +25,26 @@ import OneSignal
 
     // Handle notification received in foreground
     OneSignal.setNotificationWillShowInForegroundHandler { notification, completion in
-        self.incrementBadgeCount()
-        // Show the notification
-        completion(notification)
+      // Increment badge count directly here
+      let currentBadgeCount = UIApplication.shared.applicationIconBadgeNumber
+      UIApplication.shared.applicationIconBadgeNumber = currentBadgeCount + 1
+
+      // Show the notification
+      completion(notification)
     }
 
     // Handle notification opened
     OneSignal.setNotificationOpenedHandler { result in
-        // Optionally handle the opened notification
-        // You can access notification data here via result.notification
+      // Optionally handle the opened notification
+      // Access notification data via result.notification if needed
     }
 
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 
   private func registerPlugins(registry: FlutterPluginRegistry) {
-      if (!registry.hasPlugin("FlutterDownloaderPlugin")) {
-         FlutterDownloaderPlugin.register(with: registry.registrar(forPlugin: "FlutterDownloaderPlugin")!)
-      }
-  }
-
-  private func incrementBadgeCount() {
-    let currentBadgeCount = UIApplication.shared.applicationIconBadgeNumber
-    UIApplication.shared.applicationIconBadgeNumber = currentBadgeCount + 1
+    if !registry.hasPlugin("FlutterDownloaderPlugin") {
+      FlutterDownloaderPlugin.register(with: registry.registrar(forPlugin: "FlutterDownloaderPlugin")!)
+    }
   }
 }
