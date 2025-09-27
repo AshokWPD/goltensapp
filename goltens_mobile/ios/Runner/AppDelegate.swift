@@ -20,18 +20,20 @@ import OneSignal
     // Setup Flutter Downloader
     FlutterDownloaderPlugin.setPluginRegistrantCallback(registerPlugins)
 
-    // Initialize OneSignal
+    // Initialize OneSignal with your app ID
     OneSignal.setAppId("YOUR_ONESIGNAL_APP_ID")
 
-    // Badge increment on notification received
-    OneSignal.setNotificationReceivedHandler { notification in
-        self.incrementBadgeCount()
-    }
-
-    // Badge increment on notification shown in foreground
+    // Handle notification received in foreground
     OneSignal.setNotificationWillShowInForegroundHandler { notification, completion in
         self.incrementBadgeCount()
+        // Show the notification
         completion(notification)
+    }
+
+    // Handle notification opened
+    OneSignal.setNotificationOpenedHandler { result in
+        // Optionally handle the opened notification
+        // You can access notification data here via result.notification
     }
 
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
