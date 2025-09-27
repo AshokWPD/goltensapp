@@ -1,6 +1,5 @@
 
 // API URL
-const _debugUrl = "http://192.168.1.4:3000/api/v1";
 const _prodUrl = "https://goltens.in/api/v1";
 // const apiUrl = kReleaseMode ? _prodUrl : _debugUrl;
 const apiUrl = _prodUrl;
