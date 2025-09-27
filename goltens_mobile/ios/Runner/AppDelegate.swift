@@ -7,10 +7,15 @@ import OneSignalFramework   // new SDK
 // Foreground notification listener
 class MyForegroundNotificationListener: NSObject, OSNotificationLifecycleListener {
     func onWillDisplay(event: OSNotificationWillDisplayEvent) {
+        // Increment badge count
         let currentBadgeCount = UIApplication.shared.applicationIconBadgeNumber
         UIApplication.shared.applicationIconBadgeNumber = currentBadgeCount + 1
 
-        event.complete(event.notification)
+        // ✅ Show the notification (new API)
+        event.notification.display()
+        
+        // 👉 If you want to suppress instead, use:
+        // event.preventDefault()
     }
 }
 
@@ -41,7 +46,7 @@ class MyNotificationClickListener: NSObject, OSNotificationClickListener {
       }
     }
 
-    // ✅ Initialize OneSignal
+    // ✅ Initialize OneSignal with your App ID
     OneSignal.initialize("YOUR_ONESIGNAL_APP_ID", withLaunchOptions: launchOptions)
 
     // ✅ Add listeners
