@@ -31,7 +31,7 @@ target 'Runner' do
 
   use_modular_headers!
 
-  flutter_install_all_ios_pods File.dirname(File.realpath(_FILE_))
+  flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 
   # Uncomment if you have unit tests
   # target 'RunnerTests' do
