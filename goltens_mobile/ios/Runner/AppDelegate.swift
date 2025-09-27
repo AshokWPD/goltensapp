@@ -2,7 +2,24 @@ import UIKit
 import Flutter
 import flutter_downloader
 import FirebaseCore
-import OneSignalFramework   // ✅ updated import
+import OneSignalFramework   // new SDK
+
+// Foreground notification listener
+class MyForegroundNotificationListener: NSObject, OSNotificationLifecycleListener {
+    func onWillDisplay(event: OSNotificationWillDisplayEvent) {
+        let currentBadgeCount = UIApplication.shared.applicationIconBadgeNumber
+        UIApplication.shared.applicationIconBadgeNumber = currentBadgeCount + 1
+
+        event.complete(event.notification)
+    }
+}
+
+// Click listener
+class MyNotificationClickListener: NSObject, OSNotificationClickListener {
+    func onClick(event: OSNotificationClickEvent) {
+        print("Notification clicked: \(event.notification)")
+    }
+}
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
@@ -17,7 +34,7 @@ import OneSignalFramework   // ✅ updated import
     // Register Flutter plugins
     GeneratedPluginRegistrant.register(with: self)
 
-    // Setup Flutter Downloader with a closure instead of a method reference
+    // Setup Flutter Downloader
     FlutterDownloaderPlugin.setPluginRegistrantCallback { registry in
       if !registry.hasPlugin("FlutterDownloaderPlugin") {
         FlutterDownloaderPlugin.register(with: registry.registrar(forPlugin: "FlutterDownloaderPlugin")!)
@@ -27,19 +44,9 @@ import OneSignalFramework   // ✅ updated import
     // ✅ Initialize OneSignal
     OneSignal.initialize("YOUR_ONESIGNAL_APP_ID", withLaunchOptions: launchOptions)
 
-    // ✅ Handle notification received in foreground
-    OneSignal.Notifications.addForegroundLifecycleListener { notificationWillDisplayEvent in
-      let currentBadgeCount = UIApplication.shared.applicationIconBadgeNumber
-      UIApplication.shared.applicationIconBadgeNumber = currentBadgeCount + 1
-
-      notificationWillDisplayEvent.complete(notificationWillDisplayEvent.notification)
-    }
-
-    // ✅ Handle notification opened
-    OneSignal.Notifications.addClickListener { notificationClickEvent in
-      // Handle opened notification if needed
-      print("Notification clicked: \(notificationClickEvent.notification)")
-    }
+    // ✅ Add listeners
+    OneSignal.Notifications.addForegroundLifecycleListener(MyForegroundNotificationListener())
+    OneSignal.Notifications.addClickListener(MyNotificationClickListener())
 
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
