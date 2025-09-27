@@ -33,7 +33,7 @@ target 'Runner' do
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 
-  pod 'OneSignal', '3.0.0'
+  pod 'OneSignal', '3.6.5'
 
   # Uncomment if you have unit tests
   # target 'RunnerTests' do
