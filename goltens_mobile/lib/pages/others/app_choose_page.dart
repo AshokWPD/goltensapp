@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:goltens_core/constants/constants.dart';
 import 'package:goltens_core/models/auth.dart';
 import 'package:goltens_mobile/meet_main.dart';
@@ -61,16 +61,16 @@ class _AppChoosePageState extends State<AppChoosePage> {
       }
     }
 
-    if (Platform.isIOS) {
-      FirebaseMessaging.instance.requestPermission();
-    }
+    // if (Platform.isIOS) {
+    //   FirebaseMessaging.instance.requestPermission();
+    // }
   }
 
   void badgeCountReset(userid) async {
     var request = http.Request(
-        'PUT',
-        Uri.parse(
-            'https://goltens.in/api/v1/notifications/$userid/resetBadge'));
+      'PUT',
+      Uri.parse('https://goltens.in/api/v1/notifications/$userid/resetBadge'),
+    );
 
     http.StreamedResponse response = await request.send();
 
@@ -109,12 +109,8 @@ class _AppChoosePageState extends State<AppChoosePage> {
 
     if (isLoading) {
       return Scaffold(
-        appBar: AppBar(
-          title: const Text('Choose Application'),
-        ),
-        body: const Center(
-          child: CircularProgressIndicator(),
-        ),
+        appBar: AppBar(title: const Text('Choose Application')),
+        body: const Center(child: CircularProgressIndicator()),
       );
     }
 
@@ -135,16 +131,19 @@ class _AppChoosePageState extends State<AppChoosePage> {
                 switch (value) {
                   case 'Feedback':
                     // Navigator.pushNamed(context, '/app-feedback');
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => AppFeedback()));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AppFeedback()),
+                    );
                     break;
                   case 'Choose':
                     if (isUserAndSubAdmin) {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const UserTypeChoosePage()));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const UserTypeChoosePage(),
+                        ),
+                      );
                     }
                     break;
                   case 'logout':
@@ -152,8 +151,9 @@ class _AppChoosePageState extends State<AppChoosePage> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title:
-                              const Text("Are you sure you want to logout ?"),
+                          title: const Text(
+                            "Are you sure you want to logout ?",
+                          ),
                           actions: [
                             TextButton(
                               child: const Text("CANCEL"),
@@ -217,7 +217,7 @@ class _AppChoosePageState extends State<AppChoosePage> {
                   ),
                 ];
               },
-            )
+            ),
           ],
         ),
         body: NestedScrollView(
@@ -239,11 +239,7 @@ class _AppChoosePageState extends State<AppChoosePage> {
                                   borderRadius: BorderRadius.circular(100.0),
                                   child: Image.network(
                                     '$apiUrl/$avatar/${user?.avatar}',
-                                    errorBuilder: (
-                                      context,
-                                      obj,
-                                      stacktrace,
-                                    ) {
+                                    errorBuilder: (context, obj, stacktrace) {
                                       return Container();
                                     },
                                   ),
@@ -251,7 +247,9 @@ class _AppChoosePageState extends State<AppChoosePage> {
                               : Text(
                                   user?.name[0] ?? '---',
                                   style: const TextStyle(
-                                      fontSize: 60.0, color: Colors.black),
+                                    fontSize: 60.0,
+                                    color: Colors.black,
+                                  ),
                                 ),
                         ),
                       ),
@@ -259,9 +257,7 @@ class _AppChoosePageState extends State<AppChoosePage> {
                       Text(
                         'Logged in as ${user?.name}',
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 16.0,
-                        ),
+                        style: const TextStyle(fontSize: 16.0),
                       ),
                     ],
                   ),
@@ -270,143 +266,136 @@ class _AppChoosePageState extends State<AppChoosePage> {
             ];
           },
           body: GridView.count(
-              scrollDirection: Axis.vertical,
-              crossAxisCount: 2,
-              mainAxisSpacing: 4.0,
-              crossAxisSpacing: 4.0,
-              childAspectRatio: 0.9,
-              padding: const EdgeInsets.all(12.0),
-              children: [
-                ConstrainedBox(
-                  constraints: const BoxConstraints(minWidth: 350),
-                  child: Card(
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(context, '/home');
-                      },
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.message,
-                                size: 48.0,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                              const SizedBox(height: 14.0),
-                              const Text(
-                                'Communication',
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                ),
-                                textAlign: TextAlign.center,
-                                overflow: TextOverflow.ellipsis,
-                              )
-                            ],
-                          ),
+            scrollDirection: Axis.vertical,
+            crossAxisCount: 2,
+            mainAxisSpacing: 4.0,
+            crossAxisSpacing: 4.0,
+            childAspectRatio: 0.9,
+            padding: const EdgeInsets.all(12.0),
+            children: [
+              ConstrainedBox(
+                constraints: const BoxConstraints(minWidth: 350),
+                child: Card(
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/home');
+                    },
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(0.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.message,
+                              size: 48.0,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            const SizedBox(height: 14.0),
+                            const Text(
+                              'Communication',
+                              style: TextStyle(fontSize: 18.0),
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ),
                 ),
-                ConstrainedBox(
-                  constraints: const BoxConstraints(minWidth: 350),
-                  child: Card(
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(context, '/feedback');
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.feedback,
-                            size: 48.0,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                          const SizedBox(height: 14.0),
-                          const Text(
-                            'Feedback',
-                            style: TextStyle(
-                              fontSize: 18.0,
-                            ),
-                            textAlign: TextAlign.center,
-                          )
-                        ],
-                      ),
+              ),
+              ConstrainedBox(
+                constraints: const BoxConstraints(minWidth: 350),
+                child: Card(
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/feedback');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.feedback,
+                          size: 48.0,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        const SizedBox(height: 14.0),
+                        const Text(
+                          'Feedback',
+                          style: TextStyle(fontSize: 18.0),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                ConstrainedBox(
-                  constraints: const BoxConstraints(minWidth: 350),
-                  child: Card(
-                    child: InkWell(
-                      onTap: () {
-                        // final user = context.read<GlobalState>().user?.data;
+              ),
+              ConstrainedBox(
+                constraints: const BoxConstraints(minWidth: 350),
+                child: Card(
+                  child: InkWell(
+                    onTap: () {
+                      // final user = context.read<GlobalState>().user?.data;
 
-                        // MaterialApp(
-                        //   home: GoltensMeet(),
-                        //   navigatorKey: navigatorKey,
-                        // );
-                        //  Navigator.push(context, MaterialPageRoute(builder: (context)=>MeetMain(meetId: '',)));
-                        Navigator.pushNamed(context, '/sub-admin-meeting');
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.video_call,
-                            size: 48.0,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                          const SizedBox(height: 14.0),
-                          const Text(
-                            'Toolbox Meeting',
-                            style: TextStyle(
-                              fontSize: 18.0,
-                            ),
-                            textAlign: TextAlign.center,
-                          )
-                        ],
-                      ),
+                      // MaterialApp(
+                      //   home: GoltensMeet(),
+                      //   navigatorKey: navigatorKey,
+                      // );
+                      //  Navigator.push(context, MaterialPageRoute(builder: (context)=>MeetMain(meetId: '',)));
+                      Navigator.pushNamed(context, '/sub-admin-meeting');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.video_call,
+                          size: 48.0,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        const SizedBox(height: 14.0),
+                        const Text(
+                          'Toolbox Meeting',
+                          style: TextStyle(fontSize: 18.0),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                ConstrainedBox(
-                  constraints: const BoxConstraints(minWidth: 350),
-                  child: Card(
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(context, '/sub-emp checklist');
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.fact_check_outlined,
-                            size: 48.0,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                          const SizedBox(height: 14.0),
-                          const Text(
-                            'Checklist',
-                            style: TextStyle(
-                              fontSize: 18.0,
-                            ),
-                            textAlign: TextAlign.center,
-                          )
-                        ],
-                      ),
+              ),
+              ConstrainedBox(
+                constraints: const BoxConstraints(minWidth: 350),
+                child: Card(
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/sub-emp checklist');
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.fact_check_outlined,
+                          size: 48.0,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        const SizedBox(height: 14.0),
+                        const Text(
+                          'Checklist',
+                          style: TextStyle(fontSize: 18.0),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ]),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,5 +1,5 @@
 import 'package:dropdown_textfield/dropdown_textfield.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:goltens_core/constants/constants.dart';
 import 'package:goltens_core/models/common.dart';
 import 'package:goltens_core/services/auth.dart';
@@ -33,9 +33,9 @@ class _AuthPageState extends State<AuthPage> {
   final employeeNumberTextController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
-  Future<String?> getFcmToken() async {
-    return await FirebaseMessaging.instance.getToken();
-  }
+  // Future<String?> getFcmToken() async {
+  //   return await FirebaseMessaging.instance.getToken();
+  // }
 
   @override
   Widget build(BuildContext context) {

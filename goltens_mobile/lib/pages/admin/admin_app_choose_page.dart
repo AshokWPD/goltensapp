@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:goltens_core/constants/constants.dart';
 import 'package:goltens_mobile/pages/App_FeedbackListPage.dart';
 import 'package:goltens_mobile/provider/global_state.dart';
@@ -40,9 +40,9 @@ class _AdminAppChoosePageState extends State<AdminAppChoosePage> {
       }
     }
 
-    if (Platform.isIOS) {
-      FirebaseMessaging.instance.requestPermission();
-    }
+    // if (Platform.isIOS) {
+    //   FirebaseMessaging.instance.requestPermission();
+    // }
   }
 
   Future<bool> showExitDialog() async {

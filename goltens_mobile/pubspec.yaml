@@ -26,8 +26,6 @@ dependencies:
   email_validator: ^3.0.0
   excel: ^4.0.6
   file_picker: ^10.3.2
-  firebase_core: ^4.1.1
-  firebase_messaging: ^16.0.1
   flutter_chat_bubble: ^2.0.2
   floating_action_bubble: ^1.1.4
   flutter_dotenv: ^6.0.0

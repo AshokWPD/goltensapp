@@ -1,7 +1,6 @@
 import UIKit
 import Flutter
 import flutter_downloader
-import FirebaseCore
 import OneSignalFramework   // new SDK
 
 // Foreground notification listener
@@ -30,13 +29,7 @@ class MyNotificationClickListener: NSObject, OSNotificationClickListener {
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
 
-    // 🔹 Initialize Firebase safely
-    FirebaseApp.configure()
-    if let app = FirebaseApp.app() {
-        print("✅ Firebase initialized: \(app.name)")
-    } else {
-        print("❌ Firebase failed to initialize")
-    }
+
 
     // Register Flutter plugins
     GeneratedPluginRegistrant.register(with: self)
@@ -49,10 +42,8 @@ class MyNotificationClickListener: NSObject, OSNotificationClickListener {
     }
 
     // 🔹 Initialize OneSignal safely
-    if "YOUR-ONESIGNAL-APP-ID" == "YOUR-ONESIGNAL-APP-ID" {
-        print("⚠️ OneSignal App ID is placeholder — replace it with your real App ID")
-    }
-    OneSignal.initialize("YOUR-ONESIGNAL-APP-ID", withLaunchOptions: launchOptions)
+   
+    OneSignal.initialize("7ea4ff4f-c154-4fd2-8cf6-d8ca1103f390", withLaunchOptions: launchOptions)
     OneSignal.Notifications.addForegroundLifecycleListener(MyForegroundNotificationListener())
     OneSignal.Notifications.addClickListener(MyNotificationClickListener())
     
