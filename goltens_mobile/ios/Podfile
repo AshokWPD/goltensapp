@@ -35,6 +35,8 @@ target 'Runner' do
 
   target 'OneSignalNotificationServiceExtension' do
     pod 'OneSignalXCFramework', '>= 5.0.0', '< 6.0'
+
+     inherit! :search_paths
   end
 
 
