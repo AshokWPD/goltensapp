@@ -1,3 +1,4 @@
+# Set minimum platform version for Firebase and other plugins
 platform :ios, '15.0'
 
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -32,7 +33,9 @@ target 'Runner' do
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 
-  pod 'OneSignalXCFramework', '>= 5.0.0', '< 6.0'
+  target 'OneSignalNotificationServiceExtension' do
+    pod 'OneSignalXCFramework', '>= 5.0.0', '< 6.0'
+  end
 
 
 
