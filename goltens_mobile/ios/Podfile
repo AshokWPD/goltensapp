@@ -39,8 +39,6 @@ target 'Runner' do
      inherit! :search_paths
   end
 
-
-
   # Uncomment if you have unit tests
   # target 'RunnerTests' do
   #   inherit! :search_paths
@@ -54,6 +52,31 @@ post_install do |installer|
     # Force minimum iOS deployment target to 15.0
     target.build_configurations.each do |config|
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
+      # Disable strict Swift concurrency checking to avoid warnings
+      config.build_settings['SWIFT_STRICT_CONCURRENCY'] = 'minimal'
     end
+  end
+
+  # FIX: Patch the videosdk Swift syntax error
+  puts "Patching videosdk plugin for Swift compatibility..."
+  videosdk_path = File.join(installer.sandbox_root, 'videosdk')
+  videosdk_swift_file = File.join(videosdk_path, 'ios/Classes/VideoSDK.swift')
+  
+  if File.exist?(videosdk_swift_file)
+    content = File.read(videosdk_swift_file)
+    # Fix the duplicate parameter name issue
+    new_content = content.gsub(
+      'registerVideoProcessor(videoProcessorName videoProcessorName: String,',
+      'registerVideoProcessor(videoProcessorName: String,'
+    )
+    
+    if content != new_content
+      File.write(videosdk_swift_file, new_content)
+      puts "✓ Patched videosdk VideoSDK.swift"
+    else
+      puts "✓ videosdk already patched or issue not found"
+    end
+  else
+    puts "⚠️ videosdk file not found at: #{videosdk_swift_file}"
   end
 end
