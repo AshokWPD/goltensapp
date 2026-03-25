@@ -398,6 +398,8 @@ class WebMeetingAppBarState extends State<WebMeetingAppBar> {
             ),
           ),
 
+
+
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: TouchRippleEffect(
