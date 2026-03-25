@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:goltens_core/models/auth.dart';
@@ -37,9 +36,7 @@ import 'package:goltens_mobile/pages/message/message_detail_page.dart';
 import 'package:goltens_mobile/pages/message/read_status_page.dart';
 import 'package:goltens_mobile/pages/splash_screen.dart';
 import 'package:goltens_mobile/pages/others/file_viewer_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'meet_main.dart';
-import 'pages/App_Feedback.dart';
 import 'pages/PrivacyPolicy.dart';
 import 'pages/admin/checklist/admin_checklist_page.dart';
 import 'pages/CheckList/ChecklistIndex.dart';
