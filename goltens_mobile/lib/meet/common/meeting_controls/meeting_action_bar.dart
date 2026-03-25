@@ -249,7 +249,6 @@ class _MeetingActionBarState extends State<MeetingActionBar> {
                      _buildMeetingPoupItem(
                       "Meeting Info",
                       "Meeting Info",
-                     
                       null,
                       SvgPicture.asset("assets/info-empty.svg"),
                     ),

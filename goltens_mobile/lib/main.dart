@@ -1,10 +1,12 @@
 import 'dart:async';
 
-// import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:goltens_core/models/auth.dart';
 import 'package:goltens_mobile/components/admin/messages.dart';
+import 'package:goltens_mobile/firebase_options.dart';
 import 'package:goltens_mobile/pages/feedback/feedback_assigned_page.dart';
 import 'package:goltens_mobile/pages/feedback/feedback_list_page.dart';
 import 'package:goltens_mobile/pages/master-list/master_list_page.dart';
@@ -35,7 +37,9 @@ import 'package:goltens_mobile/pages/message/message_detail_page.dart';
 import 'package:goltens_mobile/pages/message/read_status_page.dart';
 import 'package:goltens_mobile/pages/splash_screen.dart';
 import 'package:goltens_mobile/pages/others/file_viewer_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'meet_main.dart';
+import 'pages/App_Feedback.dart';
 import 'pages/PrivacyPolicy.dart';
 import 'pages/admin/checklist/admin_checklist_page.dart';
 import 'pages/CheckList/ChecklistIndex.dart';
@@ -76,25 +80,29 @@ void testInternetConnectivity() async {
 }
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
-
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  // await Firebase.initializeApp();
+  
+  // Third: Initialize Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
+  // Fourth: Initialize other plugins
   await FlutterDownloader.initialize(debug: !kReleaseMode, ignoreSsl: true);
 
+  // Fifth: Run internet test (optional)
   testInternetConnectivity();
 
+  // Sixth: Run the app
   runApp(
     ProviderScope(
       child: provider.MultiProvider(
         providers: [
           provider.ChangeNotifierProvider(create: (context) => GlobalState()),
         ],
-        child: const App(), // Your existing App widget
+        child: const App(),
       ),
     ),
   );
