@@ -90,3 +90,4 @@ flutter:
 # Add this to resolve archive version conflict
 dependency_overrides:
   archive: ^3.6.1
+  webrtc_interface: 1.3.0
