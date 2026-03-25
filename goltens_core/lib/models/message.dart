@@ -102,6 +102,7 @@ class ReadStatusUser {
   final String avatar;
   final String name;
   final String email;
+  final String department;
   final String? reply;
   final String? mode;
   final DateTime? readAt;
@@ -110,6 +111,7 @@ class ReadStatusUser {
     required this.avatar,
     required this.name,
     required this.email,
+    required this.department,
     required this.reply,
     required this.mode,
     required this.readAt,
@@ -120,6 +122,7 @@ class ReadStatusUser {
       avatar: json['avatar'],
       name: json['name'],
       email: json['email'],
+      department: json['department'],
       mode: json['mode'],
       reply: json['reply'],
       readAt: json['readAt'] != null ? DateTime.parse(json['readAt']) : null,

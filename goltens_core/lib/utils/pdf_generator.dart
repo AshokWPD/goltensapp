@@ -83,15 +83,15 @@ class PDFGenerator {
     final pdf.Document doc = pdf.Document();
 
     List<List<dynamic>> data = [
-      ['Name', 'Email', 'Read/Unread'],
+      ['Name', 'Email','Department', 'Read/Unread'],
     ];
 
     for (var user in readUsers) {
-      data.add([user.name, user.email, 'Read']);
+      data.add([user.name, user.email,user.department, 'Read']);
     }
 
     for (var user in unReadUsers) {
-      data.add([user.name, user.email, 'Unread']);
+      data.add([user.name, user.email,user.department, 'Unread']);
     }
 
     List<pdf.TableRow> tableRows = [];
