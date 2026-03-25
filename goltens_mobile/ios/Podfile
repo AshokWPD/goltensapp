@@ -54,29 +54,42 @@ post_install do |installer|
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
       # Disable strict Swift concurrency checking to avoid warnings
       config.build_settings['SWIFT_STRICT_CONCURRENCY'] = 'minimal'
+      # Disable warnings for videosdk
+      if target.name == 'videosdk'
+        config.build_settings['SWIFT_VERSION'] = '5.0'
+      end
     end
   end
 
   # FIX: Patch the videosdk Swift syntax error
   puts "Patching videosdk plugin for Swift compatibility..."
-  videosdk_path = File.join(installer.sandbox_root, 'videosdk')
-  videosdk_swift_file = File.join(videosdk_path, 'ios/Classes/VideoSDK.swift')
   
-  if File.exist?(videosdk_swift_file)
-    content = File.read(videosdk_swift_file)
-    # Fix the duplicate parameter name issue
-    new_content = content.gsub(
-      'registerVideoProcessor(videoProcessorName videoProcessorName: String,',
-      'registerVideoProcessor(videoProcessorName: String,'
-    )
+  # Get the path to the videosdk plugin
+  videosdk_pod_target = installer.pods_project.targets.find { |t| t.name == 'videosdk' }
+  
+  if videosdk_pod_target
+    # Get the pods root directory
+    pods_root = installer.sandbox.root.to_s
+    videosdk_swift_file = File.join(pods_root, 'videosdk', 'ios', 'Classes', 'VideoSDK.swift')
     
-    if content != new_content
-      File.write(videosdk_swift_file, new_content)
-      puts "✓ Patched videosdk VideoSDK.swift"
+    if File.exist?(videosdk_swift_file)
+      content = File.read(videosdk_swift_file)
+      # Fix the duplicate parameter name issue
+      new_content = content.gsub(
+        'registerVideoProcessor(videoProcessorName videoProcessorName: String,',
+        'registerVideoProcessor(videoProcessorName: String,'
+      )
+      
+      if content != new_content
+        File.write(videosdk_swift_file, new_content)
+        puts "✓ Patched videosdk VideoSDK.swift"
+      else
+        puts "✓ videosdk already patched or issue not found"
+      end
     else
-      puts "✓ videosdk already patched or issue not found"
+      puts "⚠️ videosdk file not found at: #{videosdk_swift_file}"
     end
   else
-    puts "⚠️ videosdk file not found at: #{videosdk_swift_file}"
+    puts "⚠️ videosdk target not found"
   end
 end
