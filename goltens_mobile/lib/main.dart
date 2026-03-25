@@ -41,12 +41,12 @@ import 'pages/PrivacyPolicy.dart';
 import 'pages/admin/checklist/admin_checklist_page.dart';
 import 'pages/CheckList/ChecklistIndex.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:provider/provider.dart' as provider; // Alias for Provider
-import 'package:http/http.dart' as http; // ADD THIS IMPORT
+import 'package:provider/provider.dart' as provider;
+import 'package:http/http.dart' as http;
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-// ADD INTERNET TEST FUNCTION HERE
+// INTERNET TEST FUNCTION
 void testInternetConnectivity() async {
   print('=== INTERNET CONNECTIVITY TEST ===');
 
@@ -54,7 +54,7 @@ void testInternetConnectivity() async {
     'https://api.onesignal.com',
     'https://google.com',
     'https://goltens.in',
-    'http://10.0.2.2', // For local developmentith your actual backend
+    'http://10.0.2.2',
   ];
 
   for (var url in testUrls) {
@@ -76,23 +76,46 @@ void testInternetConnectivity() async {
   print('=== TEST COMPLETE ===');
 }
 
+// OneSignal initialization function
+Future<void> initializeOneSignal() async {
+  // Enable verbose logging for debugging
+  OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+  
+  // Initialize OneSignal
+  OneSignal.initialize("7ea4ff4f-c154-4fd2-8cf6-d8ca1103f390");
+  
+  // Request notification permission
+  final bool accepted = await OneSignal.Notifications.requestPermission(true);
+  print("✅ OneSignal permission accepted: $accepted");
+  
+  // Get the push subscription ID (use the correct API)
+  String? pushSubscriptionId = OneSignal.User.pushSubscription.id;
+  print("✅ OneSignal push subscription ID: $pushSubscriptionId");
+  
+  // Note: externalId is set via setExternalId method, not a getter
+  // To set external ID when user logs in, use: OneSignal.User.setExternalId(userId);
+}
+
 void main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   
-  // Third: Initialize Firebase
+  // Initialize Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // Fourth: Initialize other plugins
+  // Initialize Flutter Downloader
   await FlutterDownloader.initialize(debug: !kReleaseMode, ignoreSsl: true);
 
-  // Fifth: Run internet test (optional)
+  // Initialize OneSignal
+  await initializeOneSignal();
+
+  // Run internet test (optional)
   testInternetConnectivity();
 
-  // Sixth: Run the app
+  // Run the app
   runApp(
     ProviderScope(
       child: provider.MultiProvider(
@@ -179,18 +202,22 @@ class _AppState extends State<App> {
 
   @override
   void initState() {
-    OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
-    OneSignal.initialize("7ea4ff4f-c154-4fd2-8cf6-d8ca1103f390");
-    OneSignal.Notifications.requestPermission(true).then((accepted) {
-      print("Accepted Permission:$accepted");
-    });
+    super.initState();
+    
+    // Add notification click listener
     OneSignal.Notifications.addClickListener((event) {
+      print("📱 Notification clicked: ${event.notification}");
       setState(() {
         OSnotification = event.notification;
       });
       notificationHandler(context, event.notification);
     });
 
+    // Note: addForegroundLifecycleListener may not exist in your version
+    // If you need to handle foreground notifications, you can use:
+    // OneSignal.Notifications.addPermissionObserver or handle via onWillDisplay
+    
+    // Handle initial notification if app was opened from notification
     Timer(const Duration(seconds: 2), () {
       if (OSnotification != null) {
         notificationHandler(context, OSnotification!);
@@ -201,9 +228,6 @@ class _AppState extends State<App> {
         }
       }
     });
-
-    // OneSignal.User.pushSubscription.id;// OneSignal.User.pushSubscription.id;
-    super.initState();
   }
 
   @override
@@ -228,7 +252,6 @@ class _AppState extends State<App> {
         '/message-detail': (context) => const MessageDetailPage(),
         '/admin-approval': (context) => const AdminApprovalPage(),
         '/feedback_listPage': (context) => const FeedbackListPage(),
-
         '/admin-rejected': (context) => const AdminRejectedPage(),
         '/read-status': (context) => const ReadStatusPage(),
         '/manage-members': (context) => const ManageMembersPage(),
@@ -240,13 +263,11 @@ class _AppState extends State<App> {
         '/admin-communication': (context) => const AdminCommunicationPage(),
         '/admin-feedback': (context) => const AdminFeedbackPage(),
         '/feedback-assign': (context) => const FeedbackAssignedPage(),
-
         '/sub-admin-meeting': (context) => const MeetMain(meetId: ''),
         '/employee-meeting': (context) => const MeetMain(meetId: ''),
         '/admin-meeting': (context) => const MeetMain(meetId: ''),
         '/sub-emp checklist': (context) => const ChecklistIndex(),
         '/admin-checklist': (context) => const AdminChecklist(),
-        // '/app-feedback': (context) =>  AppFeedback(),
       },
     );
   }

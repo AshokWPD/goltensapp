@@ -57,6 +57,15 @@
 	<string>Main</string>
 	<key>UIStatusBarHidden</key>
 	<false/>
+	    <key>UIBackgroundModes</key>
+    <array>
+        <string>fetch</string>
+        <string>remote-notification</string>
+    </array>
+    
+    <!-- OneSignal App ID -->
+    <key>OneSignal_AppId</key>
+    <string>7ea4ff4f-c154-4fd2-8cf6-d8ca1103f390</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
